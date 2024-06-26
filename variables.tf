@@ -29,3 +29,9 @@ variable "resource_group_name_prefix" {
   default     = "rg"
   description = "Prefixo para o grupo de recursos que vai ser combinado com um nome randomico."
 }
+
+variable "username" {
+  type        = string
+  description = "O usuario que vai ser usado pra acessar a VM."
+  default     = "acmeadmin"
+}
