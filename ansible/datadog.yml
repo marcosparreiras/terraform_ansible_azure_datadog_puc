@@ -1,0 +1,23 @@
+- name: Configure Datadog on web and db servers
+  hosts: all
+  gather_facts: true
+  become: yes
+  tasks:
+    - name: Import Datadog agent role from Datadog collections
+      import_role:
+        name: datadog.dd.agent
+
+    - name: Setup Datadog with template
+      ansible.builtin.template:
+        src: templates/datadog.j2
+        dest: /etc/datadog-agent/datadog.yml
+        owner: dd-agent
+        group: dd-agent
+        mode: u=rw,g=r
+        backup: yes
+      notify:
+        - restart datadog
+
+  handlers:
+    - name: restart datadog
+      service: name=datadog-agent state=restarted

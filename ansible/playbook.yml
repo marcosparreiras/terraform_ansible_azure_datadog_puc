@@ -1,0 +1,53 @@
+- name: Configure web and db servers
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Ensure acmeuser exists
+      user:
+        name: acmeuser
+        password: "{{ acmeuser_password }}"
+        state: present
+        create_home: yes
+
+- name: Configure web servers
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Ensure nginx is running and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Create index.html with ansible_hostname
+      copy:
+        content: "{{ ansible_hostname }}"
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: "0644"
+
+- name: Configure db servers
+  hosts: db
+  become: yes
+
+  tasks:
+    - name: Install PostgreSQL
+      apt:
+        name: postgresql
+        state: present
+        update_cache: yes
+
+    - name: Ensure PostgreSQL is running and enabled
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
