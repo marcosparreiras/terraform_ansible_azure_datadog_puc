@@ -139,8 +139,8 @@ resource "azurerm_network_interface_security_group_association" "nsg_association
 # << Gera inventario ansible >>
 resource "local_file" "inventory" {
   content  = templatefile("inventory.tpl", {
-    web_ip = data.azurerm_public_ip.public_ip_0.ip_address,
-    db_ip  = data.azurerm_public_ip.public_ip_1.ip_address,
+    web_ip = azurerm_public_ip.vm_public_ip[0].ip_address,
+    db_ip  = azurerm_public_ip.vm_public_ip[1].ip_address,
   })
   filename = "./ansible/inventory.ini"
 }
