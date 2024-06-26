@@ -27,7 +27,7 @@ resource "azurerm_subnet" "subnet" {
   address_prefixes     = ["10.1.0.0/24"]
 }
 
-# << SSH >>
+# << SSH Keys >>
 resource "azapi_resource" "ssh_public_key" {
   type      = "Microsoft.Compute/sshPublicKeys@2022-11-01"
   name      = random_pet.ssh_key_name.id
@@ -133,4 +133,14 @@ resource "azurerm_network_interface_security_group_association" "nsg_association
   count                      = 2
   network_interface_id       = azurerm_network_interface.vm_nic[count.index].id
   network_security_group_id  = azurerm_network_security_group.nsg.id
+}
+
+
+# << Gera inventario ansible >>
+resource "local_file" "inventory" {
+  content  = templatefile("inventory.tpl", {
+    web_ip = data.azurerm_public_ip.public_ip_0.ip_address,
+    db_ip  = data.azurerm_public_ip.public_ip_1.ip_address,
+  })
+  filename = "./ansible/inventory.ini"
 }
