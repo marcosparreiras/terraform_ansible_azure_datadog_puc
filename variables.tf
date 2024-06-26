@@ -17,3 +17,15 @@ variable "az_client_secret" {
   type        = string
   description = "azure clinet secret"
 }
+
+variable "resource_group_location" {
+  type        = string
+  default     = "eastus"
+  description = "Local do grupo de recursos"
+}
+
+variable "resource_group_name_prefix" {
+  type        = string
+  default     = "rg"
+  description = "Prefixo para o grupo de recursos que vai ser combinado com um nome randomico."
+}
