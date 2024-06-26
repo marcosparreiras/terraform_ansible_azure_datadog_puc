@@ -1,3 +1,6 @@
+plan.tfplan
+all.yml
+inventory.ini
 private_key.pem
 # Local .terraform directories
 **/.terraform/*
